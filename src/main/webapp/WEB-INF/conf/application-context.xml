@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<beans
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+		
+	<util:properties id="mailProperties" location="classpath:/mail.properties" />
+	<util:properties id="messagesProperties" location="classpath:/messages.properties" />
+	<context:property-placeholder location="classpath:/database.properties , classpath:/mail.properties" />
+	
+	<!-- component auto scan -->
+	<context:component-scan base-package="com.paran.bizportal">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- messageSource -->
+	<bean name="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:/messages</value>
+				<value>classpath:/application</value>
+				<value>classpath:/mail</value>
+			</list>
+		</property>
+	</bean>
+	<bean name="messageSourceAccessor"
+		class="org.springframework.context.support.MessageSourceAccessor">
+		<constructor-arg>
+			<ref bean="messageSource" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="port" value="${mail.port}" />
+		<property name="protocol" value="${mail.protocol}"/>
+	</bean>
+</beans>

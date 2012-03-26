@@ -15,27 +15,27 @@
 		http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		
 	<util:properties id="mailProperties" location="classpath:/mail.properties" />
-	<context:component-scan base-package="com.paran.bizportal.control" />
+	<context:component-scan base-package="com.jaehan.portal.control" />
 
 	<mvc:annotation-driven />
 	
 	<mvc:interceptors>
 		
-		<!-- <bean class="com.paran.bizportal.inrerceptor.GenericInterceptor"/>  -->
+		<!-- <bean class="com.jaehan.portal.inrerceptor.GenericInterceptor"/>  -->
 		
 		<mvc:interceptor>
 			<mvc:mapping path="/account/**" />
 			<mvc:mapping path="/developer/**" />
 			<mvc:mapping path="/partner/**" />
 			<mvc:mapping path="/admin/**" />
-			<bean class="com.paran.bizportal.inrerceptor.SessionCheckInterceptor" />
+			<bean class="com.jaehan.portal.inrerceptor.SessionCheckInterceptor" />
 		</mvc:interceptor>
 
 		<mvc:interceptor>
 			<mvc:mapping path="/developer/**" />
 			<mvc:mapping path="/partner/**" />
 			<mvc:mapping path="/admin/**" />
-			<bean class="com.paran.bizportal.inrerceptor.AuthCheckInterceptor" />
+			<bean class="com.jaehan.portal.inrerceptor.AuthCheckInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 	

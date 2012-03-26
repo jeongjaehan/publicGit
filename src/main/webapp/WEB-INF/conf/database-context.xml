@@ -34,12 +34,12 @@
 	<!-- Master sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.paran.bizportal.domain" />
+		<property name="typeAliasesPackage" value="com.jaehan.portal.domain" />
 	</bean>
 	
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.paran.bizportal.persistence" />
+        <property name="basePackage" value="com.jaehan.portal.persistence" />
     </bean>
     
 	<!-- Master sqlSessionTemplate -->

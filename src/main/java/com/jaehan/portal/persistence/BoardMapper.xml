@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.jaehan.portal.persistence.BoardMapper">
+
+	<select id="getBoardList" parameterType="Board" resultType="Board">
+		select 	
+				seq,
+				id,
+				title,
+				content as bContent,
+				writer,
+				regdate,
+				moddate,
+				state,
+				type,
+				hitcount,
+				file_exist,
+				password
+		from 
+				board
+		order by
+				seq desc
+	</select>
+	
+	<select id="getBoardDetail" parameterType="Board" resultType="Board">
+		select 	
+				seq,
+				id,
+				title,
+				content as bContent,
+				writer,
+				regdate,
+				moddate,
+				state,
+				type,
+				hitcount,
+				file_exist,
+				password
+		from 
+				board
+		where 
+				seq = ${seq}
+	</select>
+	
+	<insert id="insertBoard" parameterType="Board">
+		insert board (
+				id,
+				title,
+				content,
+				writer,
+				regdate,
+				moddate,
+				state,
+				type,
+				hitcount,
+				file_exist,
+				password
+		)value(
+				#{id},
+				#{title} ,
+				#{content},
+				#{writer},
+				current_timestamp(),
+				current_timestamp(),
+				1,
+				1,
+				0,
+				#{file_exist},
+				#{password}
+		)
+		<!-- mybatis 이기능이 왜안될까?
+		<selectKey keyProperty="seq" order="AFTER" resultType="int">
+			SELECT LAST_INSERT_ID() AS seq
+		</selectKey>
+		 -->
+	</insert>
+	
+	<update id="updateHitCount" parameterType="Board">
+		update board
+					set hitcount=hitcount+1
+		where seq=${seq}
+	</update>
+	
+	<select id="getBoardLastInsertSeq" resultType="int">
+		SELECT LAST_INSERT_ID() AS seq
+	</select>
+	
+	<insert id="insertBoardFile" parameterType="BoardFile">
+		insert board_file (
+				seq,
+				board_id,
+				board_seq,
+				org_filename,
+				save_path,
+				save_filename,
+				file_size,
+				state
+		)value(
+				#{seq},
+				#{board_id},
+				#{board_seq},
+				#{org_filename},
+				#{save_path},
+				#{save_filename},
+				#{file_size},
+				#{state}
+		)
+	</insert>
+	
+	<select id="getBoardFileList" parameterType="Board" resultType="BoardFile">
+		select 	
+				seq,
+				board_id,
+				board_seq,
+				org_filename,
+				save_path,
+				save_filename,
+				file_size,
+				state
+		from 
+				board_file
+		where 
+				board_id = #{id}
+				and board_seq = ${seq}
+		order by
+				seq asc
+	</select>
+</mapper>

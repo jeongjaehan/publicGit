@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jaehan.portal.persistence.UserMapper">
+	
+	<insert id="add" parameterType="User">
+		insert into user 
+		(
+			login, password, name, alias, email, token_auth, token_email , phone, validated , type_profile, date_registered
+		) 
+		values 
+		(
+			#{login}, #{password}, #{name}, #{alias}, #{email}, #{token_auth}, #{token_email} ,#{phone}, 0 , #{type_profile} , current_timestamp() 
+		)
+	</insert>  
+	
+	<update id="update" parameterType="User">
+		update user set
+			date_motified = current_timestamp()
+			 
+		<if test="password != null">
+			,password = #{password}
+		</if>
+		<if test="name != null">
+			,name = #{name}
+		</if>
+		<if test="alias != null">
+			,alias = #{alias}
+		</if>
+		<if test="email != null">
+			,email = #{email}
+		</if>
+		<if test="token_auth != null">
+			,token_auth = #{token_auth}
+		</if>
+		<if test="token_email != null">
+			,token_email = #{token_email}
+		</if>
+		<if test="phone != null">
+			,phone = #{phone}
+		</if>
+		<if test="validated != 0">
+			,validated = ${validated}
+			,date_validated = current_timestamp() 
+		</if>
+		<if test="type_profile != null">
+			,type_profile = #{type_profile}
+		</if>
+		
+		where
+			login = #{login}
+	</update>
+	
+	<select id="get" parameterType="string" resultType="User">
+		select 
+			login, password, name, alias, email, token_auth, token_email, phone, validated, type_profile, date_registered, date_validated, date_motified 
+		from 
+			user
+		where
+			login = #{login}	
+	</select>
+	
+	<select id="count" parameterType="string" resultType="int">
+		select 
+			count(login) 
+		from 
+			user 
+		where
+		<if test="login != null">
+			login = #{login}	
+		</if>
+		<if test="alias != null">
+			alias = #{alias}	
+		</if>	
+	</select>
+	
+	<delete id="delete" parameterType="User">
+		delete from user where login = #{login}
+	</delete>
+</mapper>

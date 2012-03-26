@@ -12,7 +12,7 @@
   		<level value="debug" /> 
 	</category >
 	
-	<category name="com.paran.bizportal">
+	<category name="com.jaehan.bizportal">
 		<level value="debug" />
 	</category >
 	
